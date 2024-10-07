@@ -7,7 +7,7 @@ import logging
 
 
 class WhatsApp(object):
-    def __init__(self, token="EAAXKtiII4zwBO9cZCav9yZC62kWbPJTs2djodZAWv2TthAYeTROIuOnphZAgEzr5VIlnXEeZBULgnnUW5p5u68EJ0TD8ZCtf2vZBgdlRKRpjSFYBrdtJpdjvvXmFXRFJy5uOuniqDnAVukAC8dHWikpNRyFOuGi0JTVnBKm4o0NRZBsnEBDVMSXXEIaJEsOoOsORZBPgI5PtYayX7FrxJM9oQMxwFM8QZD", phone_number_id="101827599457114"):
+    def __init__(self, token="EAAXKtiII4zwBOZC0siUnpEF1cfEjiWfL9vL24saXKTA88OF9wVrFCR06MwKPJfnaXc7k2zDDBger8DKhbwDvrlmkPbIUeFAK0eFHGTJeBTwnKIJoO5zar3HYrb0uNwk8VwHKDZBKZALMHWELVQG4EZBKgZCZByvhzZCyq0lRG2t8BEExplprIhlIbLKybmENvEGjexPBl0ZAnBJIuExyTibNoxDMKnMZD", phone_number_id="101827599457114"):
         self.token = token
         self.base_url = "https://graph.facebook.com/v14.0"
         self.url = f"https://graph.facebook.com/v13.0/{phone_number_id}/messages"
