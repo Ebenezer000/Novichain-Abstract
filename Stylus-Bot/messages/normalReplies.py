@@ -152,7 +152,7 @@ Your Current Chain: {chain_name}"""),
         return "Done"
 #
     elif conversation_level == "transkey":
-        account = ETHERS.create_wallet("BSC")
+        account = ETHERS.create_wallet("ARBI")
         evm_address = []
         evm_key =[]
         evm_address.append(account["evm_address"])
@@ -197,7 +197,7 @@ What would you like to do next?"""),
         raw_list_arbi_test = ETHERS.default_token_list('ARBI_TEST', state)
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {
             "data": {
-                "chain": "BSC",
+                "chain": "ARBI_TEST",
                 "address": {
                     "evm_address": evm_address,
                 },
