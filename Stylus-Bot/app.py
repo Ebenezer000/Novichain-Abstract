@@ -36,15 +36,21 @@ def hook():
                         "trans_acc": "",
                         "address": {
                             "evm_address": [],
+                            "tvm_address": [],
                         },
                         "key": {
                             "evm_key": [],
+                            "tvm_key": []
                         },
                         "sale_type": "",
                         "token_address": "",
                         "tokens": {
+                            "ETH": [],
+                            "BSC": [],
+                            "POLY": [],
                             "ARBI": [],
-                            "ARBI_TEST": [],
+                            "ETHW": [],
+                            "TRON": [],
                         },
                         "state": "testnet",
                         "tkey": "",

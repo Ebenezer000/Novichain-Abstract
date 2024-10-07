@@ -79,7 +79,7 @@ def normalmessage(data):
         address = address = using["data"]["address"]
         key = using["data"]["key"]
     else:
-        if chain in ["ARBI_TEST", "ARBI"]:
+        if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
             try:
                 key = using["data"]["key"]["evm_key"][int(default)]
                 address = using["data"]["address"]["evm_address"][int(default)]
@@ -88,6 +88,14 @@ def normalmessage(data):
                 address = using["data"]["address"]["evm_address"][0]
             tokens = using["data"]["tokens"][chain]
 
+        elif chain == "TRON":
+            try:
+                key = using["data"]["key"]["tvm_key"][int(default)]
+                address = using["data"]["address"]["tvm_address"][int(default)]
+            except:
+                key = using["data"]["key"]["tvm_key"][0]
+                address = using["data"]["address"]["tvm_address"][0]
+            tokens = using["data"]["tokens"][chain]
     trans_acc = using["data"]["trans_acc"]
     tkey = using["data"]["tkey"]
     amount = using["data"]["amount"]
@@ -105,9 +113,9 @@ def normalmessage(data):
             messenger.send_reply_noheader(button={
 "body": (f"""
 Hi {name}, 
-Welcome to Novichain
+Welcome to SabiChatFi
 
-Send Crypto, Receive Crypto, Connect to DApps, Manage all your Crypto Tokens on Whatsapp"""),
+Send Crypto, Receive Crypto, Connect to DApps, Manage all your Crypto Tokens all on Whatsapp"""),
 "action": {
 "buttons": [
     {
@@ -141,6 +149,12 @@ Your Current Chain: {chain_name}"""),
     },{
     "type": "reply",
     "reply": {
+        "id": "switch chain",
+        "title": "Switch Chain" 
+    }
+    },{
+    "type": "reply",
+    "reply": {
         "id": "switch account",
         "title": "Switch Account" 
     }
@@ -152,64 +166,76 @@ Your Current Chain: {chain_name}"""),
         return "Done"
 #
     elif conversation_level == "transkey":
-        account = ETHERS.create_wallet("ARBI")
+        account = ETHERS.create_wallet("BSC")
         evm_address = []
         evm_key =[]
         evm_address.append(account["evm_address"])
         evm_key.append(account["evm_key"])
+        tvm_address = []
+        tvm_key = []
+        tvm_address.append(account["tvm_address"])
+        tvm_key.append(account["tvm_key"])
         
+
         messenger.send_reply_noheader(button={
     "body": (f"""
 Congrats {name}, your ChatFi account has been created. 
-You can now Send Crypto, Receive Crypto, Retrieve Account Private Keys, Import Private Keys, Swap Crypto on the Novichain Bot.
+You can now Send Crypto, Receive Crypto, Retrieve Account Private Keys, Import Private Keys, Swap Crypto on the ChatFi.
 
-Your Current Chain: ARBITRUM
+Your Current Chain: BSC
 
 Your address: {evm_address[0]}
 
 What would you like to do next?"""),
     "action": {
-        "buttons": [
-            {
-                "type": "reply",
-                "reply": {
-                    "id": "account",
-                    "title": "Account" 
-                }
-            },{
-                "type": "reply",
-                "reply": {
-                    "id": "switch chain",
-                    "title": "Switch Chain" 
-                }
-            },{
-                "type": "reply",
-                "reply": {
-                    "id": "Switch account",
-                    "title": "Switch Account" 
-                }
-            }
-        ] 
+    "buttons": [
+    {
+    "type": "reply",
+    "reply": {
+        "id": "account",
+        "title": "Account" 
+    }
+    },{
+    "type": "reply",
+    "reply": {
+        "id": "switch chain",
+        "title": "Switch Chain" 
+    }
+    },{
+    "type": "reply",
+    "reply": {
+        "id": "Switch account",
+        "title": "Switch Account" 
+    }
+    }
+    ] 
     }
     }, recipient_id=mobile)
-
+        raw_list_bsc = ETHERS.default_token_list('BSC', state)
+        raw_list_eth = ETHERS.default_token_list('ETH', state)
+        raw_list_poly = ETHERS.default_token_list('POLY', state)
         raw_list_arbi = ETHERS.default_token_list('ARBI', state)
-        raw_list_arbi_test = ETHERS.default_token_list('ARBI_TEST', state)
+        raw_list_tron = ETHERS.default_token_list('TRON', state)
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {
             "data": {
-                "chain": "ARBI_TEST",
+                "chain": "BSC",
                 "address": {
                     "evm_address": evm_address,
+                    "tvm_address": tvm_address,
                 },
                 "key": {
                     "evm_key": evm_key,
+                    "tvm_key": tvm_key
                 },
                 "tkey": message,
                 "conversation_level": "",
                 "signed": "Done",
                 "tokens":{
+                    "BSC" : raw_list_bsc,
+                    "POLY" : raw_list_poly,
+                    "ETH" : raw_list_eth,
                     "ARBI" : raw_list_arbi,
-                    "ARBI_TEST" : raw_list_arbi_test
+                    "TRON" : raw_list_tron
                     }
                 }}))
 
@@ -235,7 +261,7 @@ Please enter the amount of {ETHERS.base(chain)["base"]} you would like to transf
             try:
                 recipient = ""
                 use_num = CLIENT.query(q.get(q.ref(q.collection("userData"), ng_mobile)))
-                if chain in ["ARBI_TEST", "ARBI"]:
+                if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                     recipient = use_num["data"]["address"]["evm_address"][0]
                 elif chain == "TRON":
                     recipient = use_num["data"]["address"]["tvm_address"][0]
@@ -250,7 +276,7 @@ Please enter the amount of {ETHERS.base(chain)["base"]} you would like to transf
                 messenger.send_reply_noheader(button={
     "body": (f"""
 Hi {name}, 
-The phone number you have entered does not have an account with Novichain at the moment
+The phone number you have entered does not have an account with SabiChatFi at the moment
     """),
     "action": {
     "buttons": [
@@ -276,8 +302,11 @@ The phone number you have entered does not have an account with Novichain at the
                 recipient : str = ""
                 id_user = getIdByUser(message)
                 use_num = CLIENT.query(q.get(q.ref(q.collection("tele_userData"), id_user)))
-                if chain in ["ARBI_TEST", "ARBI"]:
+                if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                     recipient = use_num["data"]["address"]["evm_address"][0]
+                
+                elif chain == "TRON":
+                    recipient = use_num["data"]["address"]["tvm_address"][0]
                 messenger.send_message(
                     message=f"""
 Please enter the amount of {ETHERS.base(chain)["base"]} you would like to transfer            
@@ -290,7 +319,7 @@ Please enter the amount of {ETHERS.base(chain)["base"]} you would like to transf
                 messenger.send_reply_noheader(button={
     "body": (f"""
 Hi {name}, 
-The username you have entered does not have an account with Novichain at the moment
+The username you have entered does not have an account with SabiChatFi at the moment
     """),
     "action": {
     "buttons": [
@@ -310,7 +339,8 @@ The username you have entered does not have an account with Novichain at the mom
     ] 
     }
     }, recipient_id=mobile)
- 
+
+        
         else:
             messenger.send_message(
                 message=f"""
@@ -334,8 +364,11 @@ Please try again
             upamount = math.floor((float(message))*(10**(decimal)))
             norm_bal = ETHERS.base_bal(chain, state, address)
             user_bal = ""
-            if chain in ["ARBI_TEST", "ARBI"]:
+            if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                 user_bal = norm_bal
+            if chain == "TRON":
+                user_bal = math.floor((float(norm_bal))*(10**(decimal)))
+            print(f"{upamount}")
             if user_bal > upamount:
                 print("Working")
                 messenger.send_message(
@@ -345,17 +378,20 @@ You are about to transfer {message} {ETHERS.base(chain)['base']}
 From: {address}
 To: {trans_acc}
 
-Please enter your Novichain password to continue
+Please enter your SabiChatFi password to continue
                     """, recipient_id=mobile
                 )
                 CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": "ethpassword"}}))
                 CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"amount": message}}))
 
             else:
+                print("Insufficient Balance")
                 raw_bal = int(ETHERS.base_bal(chain, state, address))
                 real_bal = ""
-                if chain in ["ARBI_TEST", "ARBI"]:
+                if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                     real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
+                if chain == "TRON":
+                    real_bal = str(round(int(raw_bal), 3))
                 messenger.send_reply_nofooter(button={
 "header": "Insufficient Funds",
 "body": (f"""
@@ -392,14 +428,18 @@ Please try again
 #       
             #### Password
     elif conversation_level == "ethpassword":
+        print (f"{name} has put in their password")
         if message == tkey:
+            print (f"{name} has entered the right password")
             _chain = ETHERS.base(chain)
             decimal = _chain["decimal"]
             upamount = (int(float(amount)*10**(int(decimal))))
             norm_bal = ETHERS.base_bal(chain, state, address)
             user_bal = ""
-            if chain in ["ARBI_TEST", "ARBI"]:
+            if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                 user_bal = norm_bal
+            if chain == "TRON":
+                user_bal = math.floor((float(norm_bal))*(10**(decimal)))
             if int(user_bal) > int(upamount):
                 print("I'm at this level now")
                 try:
@@ -429,7 +469,7 @@ Proceed to: {trans_link} to view transaction
                     print(e)
                     raw_bal = int(ETHERS.base_bal(chain, state, address))
                     real_bal = ""
-                    if chain in ["ARBI_TEST", "ARBI"]:
+                    if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                         real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
                     if chain == "TRON":
                         real_bal = str(round(int(raw_bal), 3))
@@ -463,7 +503,7 @@ Your Balance: {real_bal} {ETHERS.base(chain)['base']}"""
             else:
                 raw_bal = int(ETHERS.base_bal(chain, state, address))
                 real_bal = ""
-                if chain in ["ARBI_TEST", "ARBI"]:
+                if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                     real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
                 if chain == "TRON":
                     real_bal = str(round(int(raw_bal), 3))
@@ -547,8 +587,10 @@ Please enter the amount of {token_deets["symbol"]} you would like to transfer
             try:
                 recipient = ""
                 use_num = CLIENT.query(q.get(q.ref(q.collection("userData"), ng_mobile)))
-                if chain in ["ARBI_TEST", "ARBI"]:
+                if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                     recipient = use_num["data"]["address"]["evm_address"][0]
+                elif chain == "TRON":
+                    recipient = use_num["data"]["address"]["tvm_address"][0]
                 messenger.send_message(
                 message=f"""
     Please enter the amount of {token_deets['symbol']} you would like to transfer            
@@ -562,7 +604,7 @@ Please enter the amount of {token_deets["symbol"]} you would like to transfer
                 messenger.send_reply_noheader(button={
 "body": (f"""
 Hi {name}, 
-The phone number you have entered does not have an account with Novichain at the moment
+The phone number you have entered does not have an account with SabiChatFi at the moment
 """),
 "action": {
 "buttons": [
@@ -588,9 +630,11 @@ The phone number you have entered does not have an account with Novichain at the
                 recipient : str = ""
                 id_user = getIdByUser(message)
                 use_num = CLIENT.query(q.get(q.ref(q.collection("tele_userData"), id_user)))
-                if chain in ["ARBI_TEST", "ARBI"]:
+                if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                     recipient = use_num["data"]["address"]["evm_address"][0]
                 
+                elif chain == "TRON":
+                    recipient = use_num["data"]["address"]["tvm_address"][0]
                 messenger.send_message(
                 message=f"""
     Please enter the amount of {token_deets['symbol']} you would like to transfer            
@@ -603,7 +647,7 @@ The phone number you have entered does not have an account with Novichain at the
                 messenger.send_reply_noheader(button={
     "body": (f"""
 Hi {name}, 
-The username you have entered does not have an account with Novichain at the moment
+The username you have entered does not have an account with SabiChatFi at the moment
     """),
     "action": {
     "buttons": [
@@ -655,7 +699,7 @@ You are about to transfer {message} {token_deets['symbol']}
 From: {address}
 To: {trans_acc}
 
-Please enter your Novichain password to continue
+Please enter your SabiChatFi password to continue
                     """, recipient_id=mobile
                 )
                 CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": "tokenpassword"}}))
@@ -666,8 +710,10 @@ Please enter your Novichain password to continue
                 decimal = _chain["decimal"]
                 raw_bal = int(ETHERS.base_bal(chain, state, address))
                 real_bal = ""
-                if chain in ["ARBI_TEST", "ARBI"]:
+                if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                     real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
+                if chain == "TRON":
+                    real_bal = str(round(int(raw_bal), 3))
                 messenger.send_reply_nofooter(button={
 "header": "Insufficient Funds",
 "body": (f"""
@@ -743,8 +789,10 @@ Proceed to: {trans_link} to view transaction
                     decimal = _chain["decimal"]
                     raw_bal = int(ETHERS.base_bal(chain, state, address))
                     real_bal = ""
-                    if chain in ["ARBI_TEST", "ARBI"]:
+                    if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                         real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
+                    if chain == "TRON":
+                        real_bal = str(round(int(raw_bal), 3))
                     messenger.send_reply_nofooter(button={
 "header": "Transaction Failed",
 "body": (f"""
@@ -932,8 +980,10 @@ Please confirm address and try again
                     token_print += f"{token_details['name']}: {real_token_bal} {token_details['symbol']} \n"
             raw_bal = int(ETHERS.base_bal(chain, state,  address))
             real_bal = ""
-            if chain in ["ARBI_TEST", "ARBI"]:
+            if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                 real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
+            if chain == "TRON":
+                real_bal = str(round(int(raw_bal), 3))
             messenger.send_message(
                 message=f"""
 Your {(ETHERS.base(chain))["base"]} balance is {real_bal} {(ETHERS.base(chain))["base"]}
@@ -980,7 +1030,7 @@ Please Retype your Password
             new_address = account['address']
             raw_bal = int(ETHERS.base_bal(chain, state, new_address))
             real_bal = ""
-            if chain in ["ARBI_TEST", "ARBI"]:
+            if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                 real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
                 addr = using["data"]["address"]["evm_address"]
                 keys = using["data"]["key"]["evm_key"]
@@ -1022,6 +1072,8 @@ Balance:
             CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": ""}}))
             
         except Exception as e:
+            print(e)
+            print(account)
             messenger.send_reply_nofooter(button={
     "header": "Import Failed",
     "body":f"""Hello {name}
@@ -1061,8 +1113,10 @@ Please try again
             new_key = account['key']
             raw_bal = int(ETHERS.base_bal(chain, state, new_address))
             real_bal = ""
-            if chain in ["ARBI_TEST", "ARBI"]:
+            if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                 addre = using["data"]["address"]["evm_address"]
+            else:
+                addre = using["data"]["address"]["tvm_address"]
 
             if new_address in addre:
                 messenger.send_reply_nofooter(button={
@@ -1089,7 +1143,7 @@ Balance:
     }, recipient_id=mobile)
                 return "Done"
             else:
-                if chain in ["ARBI_TEST", "ARBI"]:
+                if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
                     real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
                     addr = using["data"]["address"]["evm_address"]
                     keys = using["data"]["key"]["evm_key"]
@@ -1099,6 +1153,14 @@ Balance:
                     keys.append(message)
                     CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"address": { "evm_address" :  addr}}}))
                     CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"key": { "evm_key" : keys}}}))
+                elif chain == "TRON":
+                    real_bal = str(round(int(raw_bal), 3))
+                    addr = using["data"]["address"]["tvm_address"]
+                    keys = using["data"]["key"]["tvm_key"]
+                    addr.append(new_address)
+                    keys.append(new_key)
+                    CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"address": { "tvm_address" : addr}}}))
+                    CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"key": { "tvm_key" :  keys}}}))  
                 messenger.send_reply_nofooter(button={
         "header": "Import Successful",
         "body":f"""You have successfully added a new address to your account 
@@ -1155,7 +1217,7 @@ Please try again
         address_index = token_address
         pkey = ""
         addr = ""
-        if chain in ["ARBI_TEST", "ARBI"]:
+        if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
             pkey = using["data"]["key"]["evm_key"][int(address_index)]
             addr = using["data"]["address"]["evm_address"][int(address_index)]
         elif chain == "TRON":

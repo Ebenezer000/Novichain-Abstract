@@ -12,6 +12,9 @@ def mediaReplies(data):
     :param: data carries message data (mobile number and message load)
     """
     name = messenger.get_name(data)
+    image = messenger.get_image(data)
+    image_id, mime_typ = image["id"], image["mime_type"]
+    image_link = str(messenger.query_media_url(image_id))
     mobile = messenger.get_mobile(data)
     print(f"{mobile} sent image")
     using = CLIENT.query(q.get(q.ref(q.collection("userData"), mobile)))

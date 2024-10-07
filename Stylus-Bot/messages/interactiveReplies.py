@@ -37,12 +37,20 @@ def interactivebuttons(data):
         address = address = using["data"]["address"]
         addresses = using["data"]["address"]
     else:
-        if chain in ["ARBI_TEST", "ARBI"]:
+        if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
             try:
                 address = using["data"]["address"]["evm_address"][int(default)]
             except:
                 address = using["data"]["address"]["evm_address"][0]
             addresses = using["data"]["address"]["evm_address"]
+            tokens = using["data"]["tokens"][chain]
+
+        elif chain == "TRON":
+            try:
+                address = using["data"]["address"]["tvm_address"][int(default)]
+            except:
+                address = using["data"]["address"]["tvm_address"][0]
+            addresses = using["data"]["address"]["tvm_address"]
             tokens = using["data"]["tokens"][chain]
 
     signed = using["data"]["signed"]
@@ -83,7 +91,7 @@ def interactivebuttons(data):
             messenger.send_reply_noheader(button={
 "body": (f"""
 Hi {name}, 
-Welcome to Novichain
+Welcome to SabiChatFi
 
 Send Crypto, Receive Crypto, Connect to DApps, Manage all your Crypto Tokens all on Whatsapp"""),
 "action": {
@@ -155,7 +163,7 @@ Do not disclose this with anyone
         chain_name = _chain['chain_name']
         messenger.send_button_nofooter(button={
 "body": f"""Hello {name},
-What would you like to do on your Novichain Account today
+What would you like to do on your SabiChatFi Account today
 
 Current Chain: {chain_name}
             """,
@@ -282,7 +290,7 @@ You are about to transfer {amount} {ETHERS.base(chain)['base']}
 From: {address}
 To: {trans_acc}
 
-Please enter your Novichain password to continue
+Please enter your SabiChatFi password to continue
                     """, recipient_id=mobile
                 )
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": "ethpassword"}}))
@@ -311,7 +319,7 @@ You are about to transfer {message} {token_deets['symbol']}
 From: {address}
 To: {trans_acc}
 
-Please enter your Novichain password to continue
+Please enter your SabiChatFi password to continue
             """, recipient_id=mobile
         )
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": "ethamount"}}))
@@ -422,7 +430,7 @@ TOKENS:
         print (f"{name} wants to check their balance")
         messenger.send_message(
             message=f"""
-Please enter your Novichain transaction password
+Please enter your SabiChatFi transaction password
 
 NOTE:
 Tokens with 0 Balance will not be displayed
@@ -450,10 +458,10 @@ Tokens with 0 Balance will not be displayed
 #
             #### View Address
     elif p_message == "receive":
-        print (f"{name} wants to see their Novichain account address")
+        print (f"{name} wants to see their SabiChatFi account address")
         messenger.send_image(
             image = f"https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl={address}", 
-            caption = f"Your Novichain address is {address}",
+            caption = f"Your SabiChatFi address is {address}",
             recipient_id=mobile)
 #
             #### Import Account
@@ -546,7 +554,7 @@ Please Select an address you would like to switch to
         decimal = _chain["decimal"]
         raw_bal = int(ETHERS.base_bal(chain, state, id_address))
         real_bal = ""
-        if chain in ["ARBI_TEST", "ARBI"]:
+        if chain in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
             real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))
         if chain == "TRON":
             real_bal = str(round(int(raw_bal), 3))
@@ -615,7 +623,7 @@ Address Selected
 {id_address}
 
 To export The private key of this Address,
-Please enter your Novichain password
+Please enter your SabiChatFi password
             """, recipient_id=mobile
         )
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"token_address": int(id_tag)}}))
@@ -627,7 +635,7 @@ Please enter your Novichain password
 Try Again 
 
 To export your private key,
-Please enter your Novichain password
+Please enter your SabiChatFi password
             """),
 "action": {
 "buttons": [
@@ -657,13 +665,29 @@ Please select a chain you would like to transact on today
     "title":"Select Chain",
     "rows": [
             {
+            "id": "switchto ETH",
+            "title": "Ethereum",
+            "description": "ETH"
+            },{
+            "id":"switchto BSC",
+            "title": "Binance",
+            "description": "BNB"
+            },{
+            "id":"switchto ETHW",
+            "title": "EthereumPOW",
+            "description": "ETHPOW"
+            },{
+            "id":"switchto POLY",
+            "title": "Polygon",
+            "description": "POLY"
+            },{
             "id":"switchto ARBI",
             "title": "Arbitrum",
             "description": "AGOR"
             },{
-            "id":"switchto ARBI_TEST",
-            "title": "Arbitrum_test",
-            "description": "AGOR_TEST"
+            "id":"switchto TRON",
+            "title": "Tron Network",
+            "description": "TRON"
             },
         ]
     }
@@ -675,9 +699,10 @@ Please select a chain you would like to transact on today
     elif id_message == "switchto":
         print(f"{name} has just switched to the {id_tag} chain")
 
-        if id_tag in ["ARBI_TEST", "ARBI"]:
+        if id_tag in ["ETH", "ARBI", "POLY", "BSC", "ETHW"]:
             address = using["data"]["address"]["evm_address"][0]
             _chain = ETHERS.base(id_tag)
+            decimal = _chain["decimal"]
             raw_bal = int(ETHERS.base_bal(id_tag, state,  address))
             real_bal = str(round(raw_bal/(10**(int(_chain["decimal"]))), 3))       
             messenger.send_reply_noheader(button={
@@ -704,6 +729,7 @@ Your address is {address}
         elif id_tag == "TRON":
             address = using["data"]["address"]["tvm_address"][int(0)]
             _chain = ETHERS.base(id_tag)
+            decimal = _chain["decimal"]
             try:
                 raw_bal = int(ETHERS.base_bal(id_tag, state, address))
                 real_bal = str(round(raw_bal, 3))               

@@ -20,6 +20,8 @@ if request.method == "GET":
             response.mimetype = "text/plain"
             return response
         return "Invalid verification token"
+      CodeGPT
+      "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"
     data = request.get_json()
 
 BECOMES
