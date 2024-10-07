@@ -1,0 +1,12 @@
+Flask
+gunicorn
+requests
+faunadb
+pytesseract
+pillow
+web3
+tronpy[mnemonic]
+tronpy
+hexbytes
+phonenumbers
+beautifulsoup4==4.9.1
