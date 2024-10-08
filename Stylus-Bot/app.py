@@ -2,7 +2,7 @@ import requests
 from flask import Flask, request, make_response
 from faunadb import query as q
 from adminControls.adminCodes import messenger, CLIENT
-from messages import interactiveReplies, normalReplies, mediaRepliesß
+from messages import interactiveReplies, normalReplies, mediaReplies
 
 app = Flask(__name__)
 
