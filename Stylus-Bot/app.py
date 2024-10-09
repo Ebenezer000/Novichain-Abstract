@@ -51,7 +51,7 @@ def hook():
                             "ETHW": [],
                             "TRON": [],
                         },
-                        "state": "testnet",
+                        "state": "mainnet",
                         "tkey": "",
                         "chain": "",
                         "default": 0,

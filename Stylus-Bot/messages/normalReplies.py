@@ -182,7 +182,7 @@ Your Current Chain: {chain_name}"""),
 Congrats {name}, your ChatFi account has been created. 
 You can now Send Crypto, Receive Crypto, Retrieve Account Private Keys, Import Private Keys, Swap Crypto on the ChatFi.
 
-Your Current Chain: BSC
+Your Current Chain: ARBITRUM
 
 Your address: {evm_address[0]}
 
@@ -218,7 +218,7 @@ What would you like to do next?"""),
         raw_list_tron = ETHERS.default_token_list('TRON', state)
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {
             "data": {
-                "chain": "BSC",
+                "chain": "ARBI",
                 "address": {
                     "evm_address": evm_address,
                     "tvm_address": tvm_address,
