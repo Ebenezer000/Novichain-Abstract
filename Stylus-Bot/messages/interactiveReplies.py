@@ -91,7 +91,7 @@ def interactivebuttons(data):
             messenger.send_reply_noheader(button={
 "body": (f"""
 Hi {name}, 
-Welcome to SabiChatFi
+Welcome to NOVICHAIN
 
 Send Crypto, Receive Crypto, Connect to DApps, Manage all your Crypto Tokens all on Whatsapp"""),
 "action": {
@@ -163,7 +163,7 @@ Do not disclose this with anyone
         chain_name = _chain['chain_name']
         messenger.send_button_nofooter(button={
 "body": f"""Hello {name},
-What would you like to do on your SabiChatFi Account today
+What would you like to do on your NOVICHAIN Account today
 
 Current Chain: {chain_name}
             """,
@@ -290,7 +290,7 @@ You are about to transfer {amount} {ETHERS.base(chain)['base']}
 From: {address}
 To: {trans_acc}
 
-Please enter your SabiChatFi password to continue
+Please enter your NOVICHAIN password to continue
                     """, recipient_id=mobile
                 )
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": "ethpassword"}}))
@@ -319,7 +319,7 @@ You are about to transfer {message} {token_deets['symbol']}
 From: {address}
 To: {trans_acc}
 
-Please enter your SabiChatFi password to continue
+Please enter your NOVICHAIN password to continue
             """, recipient_id=mobile
         )
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": "ethamount"}}))
@@ -430,7 +430,7 @@ TOKENS:
         print (f"{name} wants to check their balance")
         messenger.send_message(
             message=f"""
-Please enter your SabiChatFi transaction password
+Please enter your NOVICHAIN transaction password
 
 NOTE:
 Tokens with 0 Balance will not be displayed
@@ -458,10 +458,10 @@ Tokens with 0 Balance will not be displayed
 #
             #### View Address
     elif p_message == "receive":
-        print (f"{name} wants to see their SabiChatFi account address")
+        print (f"{name} wants to see their NOVICHAIN account address")
         messenger.send_image(
             image = f"https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl={address}", 
-            caption = f"Your SabiChatFi address is {address}",
+            caption = f"Your NOVICHAIN address is {address}",
             recipient_id=mobile)
 #
             #### Import Account
@@ -623,7 +623,7 @@ Address Selected
 {id_address}
 
 To export The private key of this Address,
-Please enter your SabiChatFi password
+Please enter your NOVICHAIN password
             """, recipient_id=mobile
         )
         CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"token_address": int(id_tag)}}))
@@ -635,7 +635,7 @@ Please enter your SabiChatFi password
 Try Again 
 
 To export your private key,
-Please enter your SabiChatFi password
+Please enter your NOVICHAIN password
             """),
 "action": {
 "buttons": [

@@ -113,7 +113,7 @@ def normalmessage(data):
             messenger.send_reply_noheader(button={
 "body": (f"""
 Hi {name}, 
-Welcome to SabiChatFi
+Welcome to NOVICHAIN
 
 Send Crypto, Receive Crypto, Connect to DApps, Manage all your Crypto Tokens all on Whatsapp"""),
 "action": {
@@ -276,7 +276,7 @@ Please enter the amount of {ETHERS.base(chain)["base"]} you would like to transf
                 messenger.send_reply_noheader(button={
     "body": (f"""
 Hi {name}, 
-The phone number you have entered does not have an account with SabiChatFi at the moment
+The phone number you have entered does not have an account with NOVICHAIN at the moment
     """),
     "action": {
     "buttons": [
@@ -319,7 +319,7 @@ Please enter the amount of {ETHERS.base(chain)["base"]} you would like to transf
                 messenger.send_reply_noheader(button={
     "body": (f"""
 Hi {name}, 
-The username you have entered does not have an account with SabiChatFi at the moment
+The username you have entered does not have an account with NOVICHAIN at the moment
     """),
     "action": {
     "buttons": [
@@ -378,7 +378,7 @@ You are about to transfer {message} {ETHERS.base(chain)['base']}
 From: {address}
 To: {trans_acc}
 
-Please enter your SabiChatFi password to continue
+Please enter your NOVICHAIN password to continue
                     """, recipient_id=mobile
                 )
                 CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": "ethpassword"}}))
@@ -604,7 +604,7 @@ Please enter the amount of {token_deets["symbol"]} you would like to transfer
                 messenger.send_reply_noheader(button={
 "body": (f"""
 Hi {name}, 
-The phone number you have entered does not have an account with SabiChatFi at the moment
+The phone number you have entered does not have an account with NOVICHAIN at the moment
 """),
 "action": {
 "buttons": [
@@ -647,7 +647,7 @@ The phone number you have entered does not have an account with SabiChatFi at th
                 messenger.send_reply_noheader(button={
     "body": (f"""
 Hi {name}, 
-The username you have entered does not have an account with SabiChatFi at the moment
+The username you have entered does not have an account with NOVICHAIN at the moment
     """),
     "action": {
     "buttons": [
@@ -699,7 +699,7 @@ You are about to transfer {message} {token_deets['symbol']}
 From: {address}
 To: {trans_acc}
 
-Please enter your SabiChatFi password to continue
+Please enter your NOVICHAIN password to continue
                     """, recipient_id=mobile
                 )
                 CLIENT.query(q.update(q.ref(q.collection("userData"), mobile), {"data": {"conversation_level": "tokenpassword"}}))
