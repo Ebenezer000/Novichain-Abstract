@@ -8,7 +8,7 @@ import os
 ############### Admin Codes ###############
 fauna_secret = "fnAFAZYyLKAAUY3-ZL5ntrRfZBPfifwOvF-EUD8v"
 CLIENT = FaunaClient(secret=fauna_secret, domain="db.us.fauna.com")
-messenger = WhatsApp(token ="EAAXKtiII4zwBO7LX5oVBnr2dlkZBVpalWLxRK9TEr09b6r6i3PDjrm51SZBdCNWvAeyxjGqBR3sbsUv90HZCkJN7jmfLub14erv935ZAJqYQherq33zTmZBpbT0SNjULlprOnYG1ewHlivE0ZAUsqFcLFyux7nkXOc3zBHlodQw4bmMEMsIHnyQNrUuPJegNyOz2TJJgdT8oH2qf5hcznka2NNZBZAEe", phone_number_id="257257560810302") #You can use any random characters in here
+messenger = WhatsApp(token ="EAAXKtiII4zwBOyeMZBzrUgdnf7TzIEveoFPpP6xsqjnOOnuiruwd8Ns5vQWsjPLC5hOYiZBoDEagKdGN1hDxg1IF3IZC1EyKwFjcu5S80F8Q80CPNDFcItiz5ubXwhdpxWtaN0QGcgxZCIcvKz0fiplCeZBAwFiZAnYZCPvEBtr2i1KiIBmIDpH0CiqWNVWrFWCgXZCVBHpTVGZCIIeLsE2SZAwCDPvRqcB3dO5SQPpjUZA", phone_number_id="257257560810302") #You can use any random characters in here
 TOKEN = os.getenv("TOKEN") #application secret here
 ETHERS = WEBPY()
 ############### Admin Codes ###############
